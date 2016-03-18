@@ -117,7 +117,13 @@
                             <constraint firstItem="9Ou-1a-AMB" firstAttribute="centerX" secondItem="abJ-dk-qWt" secondAttribute="centerX" id="vj6-8r-Qho"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Hangman" id="9ga-Ca-N7Z"/>
+                    <navigationItem key="navigationItem" title="Hangman" id="9ga-Ca-N7Z">
+                        <barButtonItem key="rightBarButtonItem" title="Start Over" id="hKG-bY-rtD">
+                            <connections>
+                                <action selector="startOverAction:" destination="046-yf-Zwl" id="Z8f-cG-ihf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="guessLetterButton" destination="JjX-Cx-nA7" id="9oz-aW-CzD"/>

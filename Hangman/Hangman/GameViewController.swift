@@ -19,10 +19,19 @@ import UIKit
 
 class GameViewController: UIViewController {
     
+    @IBAction func startOverAction(sender: AnyObject) {
+        guessedLetters.removeAll()
+        wrongLettersGuessed.removeAll()
+        playerIsVictorious = false
+        playerIsDefeated = false
+        print(currentPhrase)
+        updateWrongGuessesLabel()
+        wordBeingGuessed.text = currentWordBeingGuessed()        
+    }
+    
     @IBOutlet weak var wrongGuessesLabel: UILabel!
     var currentPhrase: String!
     var guessedLetters = Array<Character>()
-    var alphabet = ["A", "B", ]
     var playerIsVictorious = false
     var playerIsDefeated = false
     var wrongLettersGuessed = Array<Character>()
@@ -50,7 +59,10 @@ class GameViewController: UIViewController {
     @IBAction func guessLetterAction(sender: AnyObject) {
         let guessedLetter = letterGuessField.text?.capitalizedString
         if let letter = guessedLetter {
-            if playerIsDefeated || playerIsVictorious {
+            if playerIsDefeated {
+                letterGuessField.text = ""
+            }
+            if playerIsVictorious {
                 print("Game is over!")
                 letterGuessField.text = ""
                 return
@@ -116,9 +128,42 @@ class GameViewController: UIViewController {
     }
     
     func checkIfGameOver() {
+        let currentWord = currentWordBeingGuessed()
         if wrongLettersGuessed.count == 6 {
             playerIsDefeated = true
+            gameOverLossAlert()
+        } else if currentWord == currentPhrase {
+            playerIsVictorious = true
+            gameOverWinAlert()
         }
+    }
+    
+    func gameOverLossAlert() {
+        let alertController = UIAlertController(title: "Game Over", message:
+            "You lost!", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Play again", style: UIAlertActionStyle.Default,handler: startNewGameHandler))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func gameOverWinAlert() {
+        let alertController = UIAlertController(title: "Victory!", message:
+            "You win!", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Play again", style: UIAlertActionStyle.Default,handler: startNewGameHandler))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func startNewGameHandler(actionTarget: UIAlertAction) {
+        let hangmanPhrases = HangmanPhrases()
+        currentPhrase = hangmanPhrases.getRandomPhrase()
+        guessedLetters.removeAll()
+        wrongLettersGuessed.removeAll()
+        playerIsVictorious = false
+        playerIsDefeated = false
+        print(currentPhrase)
+        updateWrongGuessesLabel()
+        wordBeingGuessed.text = currentWordBeingGuessed()
+        
     }
     
 
